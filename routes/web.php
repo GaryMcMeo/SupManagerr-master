@@ -12,6 +12,11 @@ require __DIR__.'/auth.php';
 
 Route::middleware(['auth'])->group(function () {
     
+    // Home route
+    Route::get('/home', function () {
+        return view('welcome');
+    })->name('home');
+
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
