@@ -1,4 +1,3 @@
-<!-- resources/views/products/createproduct.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,6 +26,22 @@
                 <div class="mb-4">
                     <label for="stock" class="block text-lg font-medium text-gray-800">Quantity</label>
                     <input type="number" name="stock" id="stock" class="w-full p-2 border border-gray-300 rounded-lg" required>
+                </div>
+
+                <!-- Category Dropdown -->
+                <div class="mb-4">
+                    <label for="categories" class="block text-lg font-medium text-gray-800">Category</label>
+                    <select name="categories" id="categories" class="w-full p-2 border border-gray-300 rounded-lg" required>
+                        <option value="">-- Select Category --</option>
+                        <!-- Add dynamic categories here -->
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                        <!-- If there are no categories, show a placeholder -->
+                        @if($categories->isEmpty())
+                            <option value="" disabled>No categories available</option>
+                        @endif
+                    </select>
                 </div>
 
                 <!-- Submit Button -->

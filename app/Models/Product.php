@@ -13,4 +13,9 @@ class Product extends Model
         'name',
         'stock',
     ];
+
+    public function category()
+    {
+        return $this->belongsToOne(Category::class);
+    }
 }

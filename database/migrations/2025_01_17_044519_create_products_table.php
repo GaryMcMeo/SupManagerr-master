@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->integer('stock');
             $table->timestamps();
+            $table->unsignedBigInteger(column: 'categories_id')->nullable();
+            $table->foreign('categories_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 
