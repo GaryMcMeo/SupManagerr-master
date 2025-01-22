@@ -8,69 +8,53 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    // Display a listing of the products
     public function index()
     {
-        // Fetch all products from the database
-        $products = Product::all();
+        $products = Product::with('category')->paginate(10);
 
-        // Pass products to the dashboard view
-        return view('dashboard', compact('products'));
+        $lowStockProducts = Product::where('stock', '<=', 5)->take(5)->get();
+
+        return view('dashboard', compact('products', 'lowStockProducts'));
     }
 
-    // Show the form for creating a new product
     public function create()
     {
-        $categories = Category::all(); // Ambil semua kategori
-        return view('createproduct', [
-            "categories" => $categories,
-        ]);
+        $categories = Category::all();
+        return view('createproduct', compact('categories'));
     }
 
-    // Store a newly created product in storage
     public function store(Request $request)
     {
-        // Validate the input
         $request->validate([
             'name' => 'required|string|max:255',
             'stock' => 'required|integer|min:1',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
-        // Store the product in the database
-        Product::create([
-            'name' => $request->name,
-            'stock' => $request->stock,
-        ]);
+        Product::create($request->only('name', 'stock', 'category_id'));
 
-        // Redirect back to the dashboard with a success message
         return redirect('/dashboard')->with('status', 'Product created successfully!');
     }
 
-    // Display the specified product
-    public function show(Product $product)
-    {
-        return view('products.show', compact('product'));
-    }
-
-    // Show the form for editing the specified product
     public function edit(Product $product)
     {
-        return view('editproduct', compact('product'));
+        $categories = Category::all();
+        return view('editproduct', compact('product', 'categories'));
     }
 
-    // Update the specified product in storage
     public function update(Request $request, Product $product)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'stock' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
-        $product->update($request->all());
+        $product->update($request->only('name', 'stock', 'category_id'));
+
         return redirect()->route('dashboard')->with('success', 'Product updated successfully.');
     }
 
-    // Remove the specified product from storage
     public function destroy(Product $product)
     {
         $product->delete();
@@ -82,9 +66,10 @@ class ProductController extends Controller
     {
         if ($product->stock > 0) {
             $product->decrement('stock');
+            return redirect()->route('dashboard')->with('status', 'Product stock decreased successfully!');
         }
 
-        return redirect()->route('dashboard')->with('status', 'Product stock decreased successfully!');
+        return redirect()->route('dashboard')->with('status', 'Stock is already at zero.');
     }
 
     // Increase product stock by 1

@@ -30,8 +30,8 @@
 
                 <!-- Category Dropdown -->
                 <div class="mb-4">
-                    <label for="categories" class="block text-lg font-medium text-gray-800">Category</label>
-                    <select name="categories" id="categories" class="w-full p-2 border border-gray-300 rounded-lg" required>
+                    <label for="category_id" class="block text-lg font-medium text-gray-800">Category</label>
+                    <select name="category_id" id="category_id" class="w-full p-2 border border-gray-300 rounded-lg" required>
                         <option value="">-- Select Category --</option>
                         <!-- Add dynamic categories here -->
                         @foreach($categories as $category)

@@ -24,14 +24,14 @@
 
             <!-- Quick links to manage products -->
             <div class="mb-6">
-                <a href="{{ route('products.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Add New Product</a>
+                <a href="{{ route('products.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Add Product</a>
             </div>
 
             <div class="mb-6">
-                <a href="{{ route('categories.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Add New Category</a>
+                <a href="{{ route('categories.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Add Category</a>
             </div>
 
-            <!-- Container 2x2 Grid -->
+            <!-- Quick Stats Section -->
             <div class="grid grid-cols-2 gap-6 mb-6">
                 
                 <!-- Ringkasan Produk -->
@@ -59,35 +59,22 @@
                         @endif
                     </ul>
                 </div>
+            </div>
 
-                <!-- Diagram Kategori Produk -->
-                <div class="bg-gray-100 p-4 rounded-lg shadow-md">
-                    <h2 class="text-lg font-semibold text-gray-800 mb-2">Penyebaran Kategori</h2>
-                    <div id="categoryChart" class="w-full h-32"></div>
-                    <!-- Placeholder untuk chart -->
-                    <script>
-                        // Tambahkan library chart.js atau sejenisnya untuk menampilkan diagram
-                        // Isi dengan data kategori produk
-                    </script>
-                </div>
-
-                <!-- Produk dengan Stok Sedikit -->
                 <div class="bg-gray-100 p-4 rounded-lg shadow-md">
                     <h2 class="text-lg font-semibold text-gray-800 mb-2">Stok Hampir Habis</h2>
                     <ul class="list-disc ml-4">
-                        <!-- Loop produk dengan stok sedikit -->
-                        @foreach($lowStockProducts ?? [] as $product)
-                            <li>{{ $product->name }} ({{ $product->stock }} unit)</li>
+                        @foreach($lowStockProducts as $product)
+                            <li>{{ $product->name }} (Sisa {{ $product->stock }})</li>
                         @endforeach
-                        <!-- Placeholder jika tidak ada data -->
-                        @if(empty($lowStockProducts))
+                        @if($lowStockProducts->isEmpty())
                             <li class="text-gray-500 text-sm">Semua stok aman.</li>
                         @endif
                     </ul>
                 </div>
             </div>
 
-            <!-- Products Table -->
+            <!-- Products Table (Paginated) -->
             <div class="overflow-x-auto">
                 <table class="min-w-full table-auto">
                     <thead>
@@ -103,25 +90,30 @@
                                 <td class="px-4 py-2">{{ $product->name }}</td>
                                 <td class="px-4 py-2">{{ $product->stock }}</td>
                                 <td class="px-4 py-2 space-x-2">
-                                    <a href="{{ route('products.edit', $product->id) }}" class="text-blue-500 hover:text-blue-700">Edit</a>
+                                    <a href="{{ route('products.edit', $product->id) }}" class="inline-block bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Edit</a>
                                     <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline-block">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-500 hover:text-red-700">Delete</button>
+                                        <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
                                     </form>
                                     <form action="{{ route('products.decrease', $product->id) }}" method="POST" class="inline-block">
                                         @csrf
-                                        <button type="submit" class="text-yellow-500 hover:text-yellow-700">Decrease</button>
+                                        <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Decrease</button>
                                     </form>
                                     <form action="{{ route('products.increase', $product->id) }}" method="POST" class="inline-block">
                                         @csrf
-                                        <button type="submit" class="text-green-500 hover:text-green-700">Increase</button>
+                                        <button type="submit" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Increase</button>
                                     </form>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+
+                <!-- Pagination links -->
+                <div class="mt-4">
+                    {{ $products->links() }}
+                </div>
             </div>
 
         </div>
