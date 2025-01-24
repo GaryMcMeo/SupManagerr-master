@@ -12,6 +12,13 @@
         <div class="bg-white p-6 rounded-lg shadow-md">
             <h1 class="text-3xl font-semibold text-gray-800 mb-4">Create New Product</h1>
 
+            <!-- Button to go back to Dashboard -->
+            <div class="mb-6">
+                <a href="{{ route('dashboard') }}" class="inline-block px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
+                    Back to Dashboard
+                </a>
+            </div>
+
             <!-- Form for creating a new product -->
             <form action="{{ route('products.store') }}" method="POST">
                 @csrf

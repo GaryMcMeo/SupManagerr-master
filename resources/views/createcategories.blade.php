@@ -1,4 +1,4 @@
-<!-- resources/views/products/createproduct.blade.php -->
+<!-- resources/views/products/createcategories.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,18 +13,25 @@
         <div class="bg-white p-6 rounded-lg shadow-md">
             <h1 class="text-3xl font-semibold text-gray-800 mb-4">Create New Category</h1>
 
-            <!-- Form for creating a new product -->
+            <!-- Button to go back to Dashboard -->
+            <div class="mb-6">
+                <a href="{{ route('dashboard') }}" class="inline-block px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
+                    Back to Dashboard
+                </a>
+            </div>
+
+            <!-- Form for creating a new category -->
             <form action="{{ route('categories.store') }}" method="POST">
                 @csrf
                 
-                <!-- Product Name -->
+                <!-- Category Name -->
                 <div class="mb-4">
                     <label for="name" class="block text-lg font-medium text-gray-800">Category Name</label>
                     <input type="text" name="name" id="name" class="w-full p-2 border border-gray-300 rounded-lg" required>
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save Product</button>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save Category</button>
             </form>
 
         </div>

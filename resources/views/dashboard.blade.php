@@ -8,6 +8,9 @@
 </head>
 <body class="bg-gray-100">
 
+    <!-- Include Navbar -->
+    @include('components.navbar')
+
     <div class="max-w-7xl mx-auto p-4">
         <div class="bg-white p-6 rounded-lg shadow-md">
 
@@ -49,11 +52,9 @@
                 <div class="bg-gray-100 p-4 rounded-lg shadow-md">
                     <h2 class="text-lg font-semibold text-gray-800 mb-2">Aktivitas Terakhir</h2>
                     <ul class="list-disc ml-4">
-                        <!-- Loop aktivitas terakhir produk -->
                         @foreach($recentActivities ?? [] as $activity)
                             <li>{{ $activity->description }} ({{ $activity->created_at->diffForHumans() }})</li>
                         @endforeach
-                        <!-- Placeholder jika tidak ada data -->
                         @if(empty($recentActivities))
                             <li class="text-gray-500 text-sm">Tidak ada aktivitas terbaru.</li>
                         @endif
@@ -61,17 +62,16 @@
                 </div>
             </div>
 
-                <div class="bg-gray-100 p-4 rounded-lg shadow-md">
-                    <h2 class="text-lg font-semibold text-gray-800 mb-2">Stok Hampir Habis</h2>
-                    <ul class="list-disc ml-4">
-                        @foreach($lowStockProducts as $product)
-                            <li>{{ $product->name }} (Sisa {{ $product->stock }})</li>
-                        @endforeach
-                        @if($lowStockProducts->isEmpty())
-                            <li class="text-gray-500 text-sm">Semua stok aman.</li>
-                        @endif
-                    </ul>
-                </div>
+            <div class="bg-gray-100 p-4 rounded-lg shadow-md">
+                <h2 class="text-lg font-semibold text-gray-800 mb-2">Stok Hampir Habis</h2>
+                <ul class="list-disc ml-4">
+                    @foreach($lowStockProducts as $product)
+                        <li>{{ $product->name }} (Sisa {{ $product->stock }})</li>
+                    @endforeach
+                    @if($lowStockProducts->isEmpty())
+                        <li class="text-gray-500 text-sm">Semua stok aman.</li>
+                    @endif
+                </ul>
             </div>
 
             <!-- Products Table (Paginated) -->
@@ -85,7 +85,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($products as $product)
+                        @foreach($productsDashboard as $product)
                             <tr class="border-b">
                                 <td class="px-4 py-2">{{ $product->name }}</td>
                                 <td class="px-4 py-2">{{ $product->stock }}</td>
@@ -112,7 +112,7 @@
 
                 <!-- Pagination links -->
                 <div class="mt-4">
-                    {{ $products->links() }}
+                    {{ $productsDashboard->links() }}
                 </div>
             </div>
 
